@@ -1,0 +1,17 @@
+#+TITLE:How to build an agency app in Django?
+
+* install python, install django, install postgres
+* start project:
+** django-admin startproject agency
+* start app:
+** django-admin startapp dash
+** add app to installed apps in settings.py
+* add database:
+** sudo -iu postgres
+** psql
+** CREATE DATABASE agencydb;
+** CREATE USER admin WITH PASSWORD 'admin';
+** GRANT ALL ON DATABASE agencydb TO admin;
+* make first migration:
+** python manage.py migrate
+* 
