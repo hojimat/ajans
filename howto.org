@@ -1,17 +1,138 @@
 #+TITLE:How to build an agency app in Django?
 
 * install python, install django, install postgres
+
+#+BEGIN_SRC
+sudo pacman -S python
+pip install django
+sudo pacman -S postgresql
+#+END_SRC
+
+
 * start project:
-** django-admin startproject agency
+
+#+BEGIN_SRC 
+django-admin startproject agency
+sudo systemctl start postgresql
+#+END_SRC
+
 * start app:
-** django-admin startapp dash
-** add app to installed apps in settings.py
+
+#+BEGIN_SRC 
+django-admin startapp dash
+add app to installed apps in settings.py
+#+END_SRC
+
 * add database:
-** sudo -iu postgres
-** psql
-** CREATE DATABASE agencydb;
-** CREATE USER admin WITH PASSWORD 'admin';
-** GRANT ALL ON DATABASE agencydb TO admin;
-* make first migration:
-** python manage.py migrate
-* 
+
+** in bash:
+#+BEGIN_SRC 
+sudo -iu postgres
+psql
+CREATE DATABASE agencydb;
+CREATE USER admin WITH PASSWORD 'admin';
+GRANT ALL ON DATABASE agencydb TO admin;
+#+END_SRC
+
+** in agency settings:
+#+BEGIN_SRC
+'ENGINE': 'django.db.backends.postgresql',
+'NAME': 'agencydb',
+'USER': 'admin',
+'PASSWORD': 'admin',
+'HOST': 'localhost',
+'PORT': ''
+#+END_SRC
+
+
+* make initial migration:
+
+#+BEGIN_SRC 
+python manage.py migrate
+#+END_SRC
+
+* create the landing page:
+
+** in dash/views:
+
+#+BEGIN_SRC 
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
+
+def index(request):
+    return render(request, 'templates/index.html',)
+#+END_SRC
+
+** in agency/settings:
+
+#+BEGIN_SRC
+STATIC_ROOT =''
+STATIC_URL = '/static/'
+STATICFILES_DIRS = (os.path.join('static'),)
+
+
+TEMPLATES DIRS: [BASE_DIR]
+#+END_SRC
+
+** in /templates
+
+Create index.html. Refer to css and js files as:
+
+#+BEGIN_SRC
+"{% static 'js/bootstrap.min.js' %}"
+#+END_SRC
+
+** in /static
+
+Put Bootstrap files or written css, js files here.
+
+** in agency/urls:
+
+#+BEGIN_SRC 
+from django.contrib import admin
+from django.urls import path
+from django.contrib.auth import views as auth_views
+from dash import views as dash_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns as statics
+
+urlpatterns += path('', dash_views.index)
+urlpatterns += statics()
+#+END_SRC
+
+* create the dashboards:
+
+** create the login templates:
+
+*** in /templates:
+
+Create login_zzz.html, register_zzz.html, password_reset.html.
+
+*** in agency/urls:
+
+#+BEGIN_SRC 
+urlpattern += path('login-zzz/', auth_views.as_view(template_name='templates/login-zzz.html'))
+#+END_SRC
+
+** create the dashboard templates
+
+In the same way as above.
+
+
+* create the Actor model:
+
+** in dash/models:
+
+#+BEGIN_SRC
+class Actor(models.Model):
+	user = models.OneToOneField(User, on_delete=models.PROTECT)
+	bio = models.TextField(max_length=500, blank=True)
+	birth_date = models.DateField(blank=True)
+#+END_SRC
+
+** in bash:
+
+#+BEGIN_SRC
+python manage.py makemigrations
+python manage.py migrate
+#+END_SRC
+

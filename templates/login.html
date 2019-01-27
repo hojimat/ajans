@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+		{% load staticfiles %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Login / Sisteme giris</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+  </head>
+
+  <body class="bg-dark">
+
+    <div class="container">
+
+      <div class="card card-login mx-auto mt-5">
+        <div class="card-header">
+          Login
+        </div>
+        <div class="card-body">
+          <form method='post'>
+	    {% csrf_token %}
+	    {% for field in form %}
+	    <div class="form-group">
+            {{ field.label_tag }}
+	    {{ field }}
+	    </div>
+	    {% endfor %}
+            <div class="form-group">
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input type="checkbox" class="form-check-input">
+                  Remember Password
+                </label>
+              </div>
+            </div>
+            <input type="submit" class="btn btn-primary btn-block" value="Login"/>
+          </form>
+	  {% if form.errors %}
+	  <p class="login-wrong text-danger">Login credentials are wrong. Please try again</p>
+	  {% endif %}
+          <div class="text-center">
+            <a class="d-block small" href="#">Forgot Password?</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/popper/popper.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+
+  </body>
+
+</html>
