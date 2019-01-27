@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, authenticate, logout
 from .models import Actor
 from .uploaders import save_image
+import os
 
 # Create your views here.
 def index(request):
@@ -55,10 +56,16 @@ def add_new_actor(request):
 		images = request.FILES.getlist('image')
 		if form.is_valid():
 			actor = form.save(commit=False)
-			actor.imagedir = "/image"
-#			actor.refresh_from_db()
+
+			user_images_path = f"media/images/{Actor.objects.all().last().id + 1}"
+			actor.imagedir = user_images_path
+
+			if not os.path.isdir(user_images_path):
+				os.mkdir(user_images_path)
+
 			for img in images:
 				save_image(img)
+
 			actor.save()
 			return redirect('/katalog')
 	else:
