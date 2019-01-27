@@ -5,6 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, authenticate, logout
 from .models import Actor
+from .uploaders import save_image
 
 # Create your views here.
 def index(request):
@@ -51,9 +52,13 @@ def register(request):
 def add_new_actor(request):
 	if request.method == 'POST':
 		form = ActorForm(request.POST, request.FILES)
+		images = request.FILES.getlist('image')
 		if form.is_valid():
-			actor = form.save()
-			actor.refresh_from_db()
+			actor = form.save(commit=False)
+			actor.imagedir = "/image"
+#			actor.refresh_from_db()
+			for img in images:
+				save_image(img)
 			actor.save()
 			return redirect('/katalog')
 	else:

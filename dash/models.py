@@ -33,8 +33,10 @@ class Actor(models.Model):
 	
 	
 	# PUBLIC FIELDS
-	imagedir = models.ImageField(upload_to='images/%Y/%m')
-	videodir = models.FileField(upload_to='videos/%Y/%m', validators=[validate_video])
+	image = models.ImageField(upload_to="images", blank=True)
+	video = models.CharField(max_length=100, blank=True)
+	imagedir = models.CharField(max_length=100, blank=True)
+	videodir = models.CharField(max_length=100, blank=True)
 	ulke = models.CharField(max_length=45, blank=True)
 	il = models.CharField(max_length=45, blank=True)
 	ilce = models.CharField(max_length=45, blank=True)

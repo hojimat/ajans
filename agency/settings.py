@@ -134,3 +134,9 @@ LOGOUT_REDIRECT_URL = '/'
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"	
+
+# Upload files
+FILE_UPLOAD_HANDLERS = [
+	'django.core.files.uploadhandler.MemoryFileUploadHandler',
+	'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]
