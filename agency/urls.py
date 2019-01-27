@@ -33,7 +33,6 @@ urlpatterns = [
 	
 	# registration
 	path('register/', dash_views.register),
-	path('register/success/', dash_views.register_success),
 
 	# catalogue of actors
 	path('add-new-actor/', dash_views.add_new_actor),
