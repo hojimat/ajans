@@ -37,5 +37,7 @@ class ActorForm(forms.ModelForm):
 				'tenrengi', 'incelendi', 'otizm', 'TCStatus'
 				]
 		widgets = {'image': forms.ClearableFileInput(attrs={'multiple':True}),
+				   'video': forms.ClearableFileInput(attrs={'multiple':True}),
 				   'imagedir': forms.HiddenInput(),
+				   'videodir': forms.HiddenInput(),
 				  }

@@ -5,16 +5,14 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, authenticate, logout
 from .models import Actor
-from .uploaders import save_image
+#from .uploaders import save_image, save_video
 import os
 
 # Create your views here.
 def index(request):
     return render(request, 'templates/index.html',)
 
-
-
-@login_required(login_url='/login/')
+@login_required(login_url='/giris/')
 def catalogue(request):
 	actors = Actor.objects.all().values()
 	return render(request, 'templates/catalogue.html', {'actors':actors})
@@ -26,11 +24,22 @@ def group_required(*group_names):
             if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
                 return True
         return False
-    return user_passes_test(in_groups, login_url='/login/')
+    return user_passes_test(in_groups, login_url='/giris/')
+
+@login_required(login_url='/giris/')
+def portfolio_public(request, actorid):
+#	actor = Actor.objects.filter(id=int(actorid))[0].__dict__.items()
+	return render(request, 'templates/portfolio_public.html', {'actor': actor})
+
+@login_required(login_url='/giris/')
+@group_required('staff', 'owner')
+def portfolio_private(request, actorid):
+#	actor = Actor.objects.filter(id=int(actorid))[0].__dict__.items()
+	return render(request, 'templates/portfolio_private.html', {'actor': actor})
+	
 
 
-
-@login_required(login_url='/login/')
+@login_required(login_url='/giris/')
 @group_required('staff', 'owner')
 def register(request):
 	if request.method == 'POST':
@@ -48,23 +57,34 @@ def register(request):
 	return render(request, 'templates/register_user.html', {'form':form})
 
 
-@login_required(login_url='/login/')
+@login_required(login_url='/giris/')
 @group_required('staff', 'owner')
 def add_new_actor(request):
 	if request.method == 'POST':
 		form = ActorForm(request.POST, request.FILES)
 		images = request.FILES.getlist('image')
+		videos = request.FILES.getlist('video')
 		if form.is_valid():
 			actor = form.save(commit=False)
 
-			user_images_path = f"media/images/{Actor.objects.all().last().id + 1}"
+			mynum = str(Actor.objects.all().last().id + 1).zfill(10)
+			
+			user_images_path = f"media/images/{mynum}"
+			user_videos_path = f"media/videos/{mynum}"
 			actor.imagedir = user_images_path
+			actor.videodir = user_videos_path
 
 			if not os.path.isdir(user_images_path):
 				os.mkdir(user_images_path)
 
-			for img in images:
-				save_image(img)
+			if not os.path.isdir(user_videos_path):
+				os.mkdir(user_videos_path)
+
+#			for img in images:
+#				save_image(img)
+
+#			for vid in videos:
+#				save_video(vid)
 
 			actor.save()
 			return redirect('/katalog')

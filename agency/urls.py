@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from dash import views as dash_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns as statics
@@ -29,14 +29,17 @@ urlpatterns = [
     path('', dash_views.index),
 	
 	# authentication:
-	path('login/', auth_views.LoginView.as_view(template_name='templates/login.html')),
+	path('giris/', auth_views.LoginView.as_view(template_name='templates/login.html')),
 	
 	# registration
-	path('register/', dash_views.register),
+	path('yenihesap/', dash_views.register),
 
 	# catalogue of actors
-	path('add-new-actor/', dash_views.add_new_actor),
+	path('katalog/ekle', dash_views.add_new_actor),
 	path('katalog/', dash_views.catalogue),
+
+	re_path(r'^katalog/(?P<actorid>\d+)$', dash_views.portfolio_public),
+	re_path(r'^katalog/(?P<actorid>\d+)/full$', dash_views.portfolio_private),
 
 ]
 
