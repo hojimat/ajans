@@ -5,7 +5,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, authenticate, logout
 from .models import Actor
-#from .uploaders import save_image, save_video
+from .uploaders import save_image, save_video
+from .helpers import public_fields, private_fields
 import os
 
 # Create your views here.
@@ -28,14 +29,16 @@ def group_required(*group_names):
 
 @login_required(login_url='/giris/')
 def portfolio_public(request, actorid):
-#	actor = Actor.objects.filter(id=int(actorid))[0].__dict__.items()
-	return render(request, 'templates/portfolio_public.html', {'actor': actor})
+	actor = Actor.objects.filter(id=int(actorid))[0].__dict__
+	public_actor = dict((z, actor[z]) for z in public_fields if z in actor).items()
+	return render(request, 'templates/portfolio_public.html', {'actor': public_actor})
 
 @login_required(login_url='/giris/')
 @group_required('staff', 'owner')
 def portfolio_private(request, actorid):
-#	actor = Actor.objects.filter(id=int(actorid))[0].__dict__.items()
-	return render(request, 'templates/portfolio_private.html', {'actor': actor})
+	actor = Actor.objects.filter(id=int(actorid))[0].__dict__
+	private_actor = dict((z, actor[z]) for z in private_fields if z in actor).items()
+	return render(request, 'templates/portfolio_private.html', {'actor': private_actor})
 	
 
 
@@ -67,7 +70,7 @@ def add_new_actor(request):
 		if form.is_valid():
 			actor = form.save(commit=False)
 
-			mynum = str(Actor.objects.all().last().id + 1).zfill(10)
+			mynum = str(Actor.objects.all().count() + 1).zfill(10)
 			
 			user_images_path = f"media/images/{mynum}"
 			user_videos_path = f"media/videos/{mynum}"
@@ -80,11 +83,11 @@ def add_new_actor(request):
 			if not os.path.isdir(user_videos_path):
 				os.mkdir(user_videos_path)
 
-#			for img in images:
-#				save_image(img)
+			for img in images:
+				save_image(img)
 
-#			for vid in videos:
-#				save_video(vid)
+			for vid in videos:
+				save_video(vid)
 
 			actor.save()
 			return redirect('/katalog')

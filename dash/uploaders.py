@@ -1,7 +1,7 @@
 from .models import Actor
 import os
 
-mynumber = str(Actor.objects.all().last().id + 1).zfill(10)
+mynumber = str(Actor.objects.all().count() + 1).zfill(10)
 
 def save_image(f):
 	with open(os.path.join(f"media/images/{mynumber}", f.name), 'wb+') as destination:
