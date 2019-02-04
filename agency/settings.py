@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,7 +82,7 @@ DATABASES = {
         'NAME': 'agencydb',
 		'USER': 'admin',
 		'PASSWORD':'admin',
-		'HOST': 'localhost',
+		'HOST': '',
 		'PORT': '',
     }
 }
@@ -140,3 +141,6 @@ FILE_UPLOAD_HANDLERS = [
 	'django.core.files.uploadhandler.MemoryFileUploadHandler',
 	'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 ]
+
+django_heroku.settings(locals())
+
