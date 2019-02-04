@@ -5,9 +5,9 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    initial = True
 
     dependencies = [
+        ('dash', '0000_auth'),
     ]
 
     operations = [

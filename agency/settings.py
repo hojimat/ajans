@@ -26,7 +26,7 @@ SECRET_KEY = 'j!%)6cve3w-z9zqz+#0j8uo-n+f7yn3#09@o&8u)1=zg^sj^b1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com', 'localhost']
 
 
 # Application definition
@@ -79,11 +79,10 @@ WSGI_APPLICATION = 'agency.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'agencydb',
-		'USER': 'admin',
-		'PASSWORD':'admin',
-		'HOST': '',
-		'PORT': '',
+        'NAME': 'postgres',
+		'USER': 'postgres',
+		'HOST': 'db',
+		'PORT': '5432',
     }
 }
 
@@ -124,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join('static'),)
 
