@@ -1,6 +1,6 @@
-Django==2.1
-psycopg2==2.7.6.1
-psycopg2-binary==2.7.6.1
+Django
+psycopg2
+psycopg2-binary
 gunicorn
 django-heroku
 Pillow
