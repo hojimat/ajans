@@ -83,10 +83,10 @@ def add_new_actor(request):
 			if not os.path.isdir(user_videos_path):
 				os.mkdir(user_videos_path)
 
-			for img in images:
+#			for img in images:
 #				save_image(img)
 
-			for vid in videos:
+#			for vid in videos:
 #				save_video(vid)
 
 			actor.save()
