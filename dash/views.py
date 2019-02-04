@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login, authenticate, logout
 from .models import Actor
-from .uploaders import save_image, save_video
+#from .uploaders import save_image, save_video
 from .helpers import public_fields, private_fields
 import os
 
@@ -84,10 +84,10 @@ def add_new_actor(request):
 				os.mkdir(user_videos_path)
 
 			for img in images:
-				save_image(img)
+#				save_image(img)
 
 			for vid in videos:
-				save_video(vid)
+#				save_video(vid)
 
 			actor.save()
 			return redirect('/katalog')
