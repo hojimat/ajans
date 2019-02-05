@@ -133,7 +133,8 @@ STATICFILES_DIRS = (os.path.join('static'),)
 LOGOUT_REDIRECT_URL = '/'
 
 # Media files
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = ""
 MEDIA_URL = "/media/"	
 
 # Upload files
