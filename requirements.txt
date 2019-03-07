@@ -5,3 +5,4 @@ gunicorn
 django-heroku
 Pillow
 whitenoise
+django-filter
