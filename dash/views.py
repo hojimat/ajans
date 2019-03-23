@@ -7,6 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from .models import Actor
 from .uploaders import save_image, save_video
 from .helpers import public_fields, private_fields
+from .filters import ActorFilter
 import os
 
 # Create your views here.
@@ -15,8 +16,11 @@ def index(request):
 
 @login_required(login_url='/giris/')
 def catalogue(request):
-	actors = Actor.objects.all().values()
-	return render(request, 'templates/catalogue.html', {'actors':actors})
+	actor_list = Actor.objects.all()
+
+	actors = actor_list.values()
+	actor_filter = ActorFilter(request.GET, queryset=actor_list)
+	return render(request, 'templates/catalogue.html', {'actors':actors, 'filter': actor_filter})
 
 # Custom decorator for groups:
 def group_required(*group_names):

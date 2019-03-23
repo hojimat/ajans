@@ -62,9 +62,10 @@
             <a href="#" class="list-group-item">Category 3</a>
           </div>
           <div class="list-group mt-5">
-            <a href="/katalog/ekle" class="list-group-item">Profil ekle</a>
-            <a href="#" class="list-group-item">Category 2</a>
-            <a href="#" class="list-group-item">Category 3</a>
+		  	<form method="get">
+				{{ filter.form.as_p }}
+				<button type="submit">Filtrele</button>
+			</form>
           </div>
 
 		
@@ -74,7 +75,7 @@
         <div class="col-lg-9">
 
           <div class="row">
-		{% for x in actors %}
+		{% for x in filter.qs %}
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
 			  	<p>{{x.imagedir }}</p>
